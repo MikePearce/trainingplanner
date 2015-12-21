@@ -30,22 +30,45 @@
 
     <div class="container">
         <div class="row">
-
-        <table id="sort" class="grid" title="Kurt Vonnegut novels">
-    <thead>
-        <tr><th>Year</th><th>Title</th><th>Grade</th></tr>
-    </thead>
-    <tbody>
-        <tr><td>1969</td><td>Slaughterhouse-Five</td><td>A+</td></tr>
-        <tr><td>1952</td><td>Player Piano</td><td>B</td></tr>
-        <tr><td>1963</td><td>Cat's Cradle</td><td>A+</td></tr>
-        <tr><td>1973</td><td>Breakfast of Champions</td><td>C</td></tr>
-        <tr><td>1965</td><td>God Bless You, Mr. Rosewater</td><td>A</td></tr>
-    </tbody>
-</table>
-
-
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading">
+                <h3 class="panel-title">Users</h3>
+                <div class="pull-right">
+                    <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                </div>
+            </div>
+            <table class="table" id="sort">
+                <thead>
+                    <tr class="filters">
+                        <th><input type="text" class="form-control" placeholder="#" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Name" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Description" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Length" disabled></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
     </div>
 
     <!-- Navigation -->
