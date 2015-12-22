@@ -28,49 +28,6 @@
 
 <body>
 
-    <div class="container">
-        <div class="row">
-        <div class="panel panel-primary filterable">
-            <div class="panel-heading">
-                <h3 class="panel-title">Users</h3>
-                <div class="pull-right">
-                    <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
-                </div>
-            </div>
-            <table class="table" id="sort">
-                <thead>
-                    <tr class="filters">
-                        <th><input type="text" class="form-control" placeholder="#" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="Name" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="Description" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="Length" disabled></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    </div>
-
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -106,7 +63,39 @@
     <!-- Page Content -->
     <div class="container">
 
-        <!-- Jumbotron Header -->
+        <div class="row">
+        <div class="panel panel-primary filterable">
+            <div class="panel-heading">
+                <h3 class="panel-title">Training Plan</h3>
+                <div class="pull-right">
+                    <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                </div>
+            </div>
+            <table class="table" id="sort">
+                <thead>
+                    <tr class="filters">
+                        <th>&nbsp;</th>
+                        <th><input type="text" class="form-control" placeholder="Order" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Name" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Description" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Length" disabled></th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                </tbody>
+            </table>
+            <div>
+                <div class="pull-right">
+                    <button type="button" class="btn btn-primary" id="add-session">add a new session</button>
+                </div>
+            </div>
+            
+        </div>
+<!--
+
+        <!-- Jumbotron Header --
         <header class="jumbotron hero-spacer">
             <h1>A Warm Welcome!</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.</p>
@@ -116,7 +105,7 @@
 
         <hr>
 
-        <!-- Title -->
+        <!-- Title --
         <div class="row">
             <div class="col-lg-12">
                 <h3>Latest Features</h3>
@@ -124,7 +113,7 @@
         </div>
         <!-- /.row -->
 
-        <!-- Page Features -->
+        <!-- Page Features --
         <div class="row text-center">
 
             <div class="col-md-3 col-sm-6 hero-feature">
@@ -202,7 +191,7 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-
+    <script src="js/editable.js"></script>
     <script src="js/planner.js"></script>
 
 </body>
