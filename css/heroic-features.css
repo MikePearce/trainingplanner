@@ -51,6 +51,9 @@ footer {
 .glyphicon-resize-vertical {
 	cursor: move;
 }
+#sort td.break {
+    background-color: green;
+}
 
 .padding-right {
     padding-right: 10px;

@@ -47,28 +47,58 @@ $(document).ready(function() {
 			else {
 				startTime = endTime
 				endTime = dateAdd(endTime, 'minute', value.mins);	
-				
-
 			}
 
 			startClock = startTime.getHours()+":"+(startTime.getMinutes()<10?'0':'') + startTime.getMinutes();
 			endClock = endTime.getHours()+":"+(endTime.getMinutes()<10?'0':'') + endTime.getMinutes();
 			
-
-			$('#sort > tbody:last-child').append(
-				'<tr data-id="'+value.order+'" data-order="'+value.order+'"><td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
-				//+'<td id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="order">'+ value.order +'</td>'
-				+'<td class="edit edit-name" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name">'+ value.name +'</td>'
-				+'<td class="edit edit-description" id="edit-description-'+value.order+'" data-key="'+value.order+'" data-what="description">'+ value.description +'</td>'
-				+'<td class="edit edit-mins" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+ value.mins +'</td>'
-				+'<td>'+ startClock +' > '+ endClock +'</td>'
-				+'<td><button type="button" class="btn btn-primary delete-session">delete session</button></td></tr>'
-			);
+			if (value.type == 'break') {
+				$('#sort > tbody:last-child').append(
+					'<tr data-type="break" data-id="'+value.order+'" data-order="'+value.order+'" class="break"><td class="drag break"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
+					+'<td class="edit edit-name break" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name" colspan="2">'+value.name+'</td>'
+					+'<td class="edit edit-mins break" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+value.mins+'</td>'
+					+'<td class="break">'+ startClock +' > '+ endClock +'</td>'
+					+'<td class="break"><button type="button" class="btn btn-primary delete-session">delete session</button></td></tr>'
+				);
+			}
+			else {
+				$('#sort > tbody:last-child').append(
+					'<tr data-type="'+value.type+'" data-id="'+value.order+'" data-order="'+value.order+'"><td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
+					//+'<td id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="order">'+ value.order +'</td>'
+					+'<td class="edit edit-name" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name">'+ value.name +'</td>'
+					+'<td class="edit edit-description" id="edit-description-'+value.order+'" data-key="'+value.order+'" data-what="description">'+ value.description +'</td>'
+					+'<td class="edit edit-mins" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+ value.mins +'</td>'
+					+'<td>'+ startClock +' > '+ endClock +'</td>'
+					+'<td><button type="button" class="btn btn-primary delete-session">delete session</button></td></tr>'
+				);	
+			}
+			
 		}
 		$('.edit').editable(editOpts.url, editOpts.opts);
-		//console.log(key +": "+ value.name);
+		
 	});
 
+
+	$('#add-break').click(function(){
+
+		// find the last ID
+		x = $( "#sort > tbody tr:last-child" ).data( "order" );
+		if ( isNaN(x) ) x = 0;
+		x = ++x;
+
+        $('#sort > tbody:last-child').append(
+			'<tr data-type="break" data-id="'+x+'" data-order="'+x+'" class="break"><td class="drag break"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
+			+'<td class="edit edit-name break" id="edit-name-'+x+'" data-key="'+x+'" data-what="name" colspan="2">Name of Break</td>'
+			+'<td class="edit edit-mins break" id="edit-mins-'+x+'" data-key="'+x+'" data-what="mins">30</td>'
+			+'<td class="break"></td>'
+			+'<td class="break"><button type="button" class="btn btn-primary delete-session">delete session</button></td></tr>'
+		);
+
+		$('.edit').editable(editOpts.url, editOpts.opts);
+		plan = getPlan();
+		plan.push( { 'order': x, 'name' : 'Name of break', 'description' : 'description of session', 'mins' : '30', 'type': 'break' } );
+		localStorage.setItem('plan', JSON.stringify(plan));
+    });
 	/**
 	ADD new row
 	**/
@@ -80,7 +110,7 @@ $(document).ready(function() {
 		x = ++x;
 
         $('#sort > tbody:last-child').append(
-			'<tr data-id="'+x+'" data-order="'+x+'"><td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
+			'<tr data-type="session" data-id="'+x+'" data-order="'+x+'"><td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
 			//+'<td id="edit-name-'+x+'" data-key="'+x+'" data-what="order">'+ x +'</td>'
 			+'<td class="edit edit-name" id="edit-name-'+x+'" data-key="'+x+'" data-what="name">Name of session</td>'
 			+'<td class="edit edit-description" id="edit-description-'+x+'" data-key="'+x+'" data-what="description">Description of session</td>'
@@ -91,7 +121,7 @@ $(document).ready(function() {
 
 		$('.edit').editable(editOpts.url, editOpts.opts);
 		plan = getPlan();
-		plan.push( { 'order': x, 'name' : 'Name of session', 'description' : 'description of session', 'mins' : '30' } );
+		plan.push( { 'order': x, 'name' : 'Name of session', 'description' : 'description of session', 'mins' : '30', 'type': 'session' } );
 		localStorage.setItem('plan', JSON.stringify(plan));
     });
 
@@ -142,7 +172,8 @@ $(document).ready(function() {
 					'order': $(this).data('order'), 
 					'name' : $(this).children('.edit-name').text(), 
 					'description' : $(this).children('.edit-description').text(), 
-					'mins' : $(this).children('.edit-mins').text() 
+					'mins' : $(this).children('.edit-mins').text(), 
+					'type' : $(this).data('type')
 				} );
 	        });
 
