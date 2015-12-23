@@ -35,11 +35,11 @@ $(document).ready(function() {
 	$.each(plan, function(key, value) {
 		if ( value !== null ) {
 			$('#sort > tbody:last-child').append(
-				'<tr id="id'+value.order+'" data-order="'+value.order+'"><td class="drag">O</td>'
+				'<tr data-id="'+value.order+'" data-order="'+value.order+'"><td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
 				+'<td id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="order">'+ value.order +'</td>'
-				+'<td class="edit" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name">'+ value.name +'</td>'
-				+'<td class="edit" id="edit-description-'+value.order+'" data-key="'+value.order+'" data-what="description">'+ value.description +'</td>'
-				+'<td class="edit" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+ value.mins +'</td>'
+				+'<td class="edit edit-name" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name">'+ value.name +'</td>'
+				+'<td class="edit edit-description" id="edit-description-'+value.order+'" data-key="'+value.order+'" data-what="description">'+ value.description +'</td>'
+				+'<td class="edit edit-mins" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+ value.mins +'</td>'
 				+'<td><button type="button" class="btn btn-primary delete-session">delete session</button></td></tr>'
 			);
 		}
@@ -58,11 +58,11 @@ $(document).ready(function() {
 		x = ++x;
 
         $('#sort > tbody:last-child').append(
-			'<tr data-order="'+x+'"><td class="drag">O</td>'
+			'<tr data-id="'+x+'" data-order="'+x+'"><td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
 			+'<td id="edit-name-'+x+'" data-key="'+x+'" data-what="order">'+ x +'</td>'
-			+'<td class="edit" id="edit-name-'+x+'" data-key="'+x+'" data-what="name">Name of session</td>'
-			+'<td class="edit" id="edit-description-'+x+'" data-key="'+x+'" data-what="description">Description of session</td>'
-			+'<td class="edit" id="edit-mins-'+x+'" data-key="'+x+'" data-what="mins">30</td>'
+			+'<td class="edit edit-name" id="edit-name-'+x+'" data-key="'+x+'" data-what="name">Name of session</td>'
+			+'<td class="edit edit-description" id="edit-description-'+x+'" data-key="'+x+'" data-what="description">Description of session</td>'
+			+'<td class="edit edit-mins" id="edit-mins-'+x+'" data-key="'+x+'" data-what="mins">30</td>'
 			+'<td><button type="button" class="btn btn-primary delete-session">delete session</button></td></tr>'
 		);
 
@@ -96,8 +96,6 @@ $(document).ready(function() {
 	/**
 	DRAGGABLES
 	**/
-	$("#sort tbody").sortable().disableSelection();
-
 	// Return a helper with preserved width of cells
 	var fixHelper = function(e, ui) {
 		ui.children().each(function() {
@@ -107,14 +105,30 @@ $(document).ready(function() {
 	};
 
 	$("#sort tbody").sortable({
-		helper: fixHelper
-	}).disableSelection();
+		helper: fixHelper,
+	    axis: 'y',
+	    update: function (event, ui) {
+	    	
+	    	// Empty the plan 
+	    	var newPlan = [];
+	        var rows = $(this).children('tr');
+	        $.each(rows, function(key, value) {
 
-	
-	/**
-	Editables
-	**/
-	$('.edit').editable(editOpts.url, editOpts.opts);
+	        	// Now we need to rebuild the plan object
+				newPlan.push( { 
+					'order': $(this).data('order'), 
+					'name' : $(this).children('.edit-name').text(), 
+					'description' : $(this).children('.edit-description').text(), 
+					'mins' : $(this).children('.edit-mins').text() 
+				} );
+	        });
+
+	        console.log(newPlan);
+
+	        // Now, overwrite the plan in localStorage
+	        localStorage.setItem('plan', JSON.stringify(newPlan));
+	    }
+	}).disableSelection();
 
 	function saveModification(key, value, what, order) {
 

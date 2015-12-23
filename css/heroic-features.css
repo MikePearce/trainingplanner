@@ -47,3 +47,7 @@ footer {
 #sort td {
 	background-color: #ffffff;
 }
+
+.glyphicon-resize-vertical {
+	cursor: move;
+}
