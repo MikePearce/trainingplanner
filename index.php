@@ -70,15 +70,22 @@
                 <div class="pull-right">
                     <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
                 </div>
+                <div class="pull-right padding-right">
+                    Start time: 
+                    <select name="start-time" id="start-time">
+                        <option value="9">9am</option>
+                        <option value="10">10am</option>
+                    </select>
+                </div>
             </div>
             <table class="table" id="sort">
                 <thead>
                     <tr class="filters">
                         <th>&nbsp;</th>
-                        <th><input type="text" class="form-control" placeholder="Order" disabled></th>
                         <th><input type="text" class="form-control" placeholder="Name" disabled></th>
                         <th><input type="text" class="form-control" placeholder="Description" disabled></th>
                         <th><input type="text" class="form-control" placeholder="Length" disabled></th>
+                        <th>Session Starts > Ends</th>
                         <th>&nbsp;</th>
                     </tr>
                 </thead>
@@ -86,12 +93,11 @@
                     
                 </tbody>
             </table>
-            <div>
-                <div class="pull-right">
-                    <button type="button" class="btn btn-primary" id="add-session">add a new session</button>
-                </div>
+        </div>
+        <div class="row">
+            <div class="pull-right">
+                <button type="button" class="btn btn-primary" id="add-session">add a new session</button>
             </div>
-            
         </div>
 <!--
 

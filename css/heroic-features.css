@@ -51,3 +51,7 @@ footer {
 .glyphicon-resize-vertical {
 	cursor: move;
 }
+
+.padding-right {
+    padding-right: 10px;
+}

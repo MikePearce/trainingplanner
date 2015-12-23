@@ -15,7 +15,6 @@ $(document).ready(function() {
 		}
 	};	
 
-
 	function getPlan() {
 		if(localStorage.getItem('plan')) {
 			plan = JSON.parse(localStorage.getItem('plan'));
@@ -34,12 +33,35 @@ $(document).ready(function() {
 	// Do we ahve anything in local storage?
 	$.each(plan, function(key, value) {
 		if ( value !== null ) {
+			
+			// Timey-wimey stuff
+			if (typeof startTime === 'undefined') {
+				date = new Date();
+				date.setHours($('#start-time').val());
+				date.setMinutes(00);
+				date.setSeconds(00);
+
+				startTime = date
+				endTime = dateAdd(date, 'minute', value.mins);	
+			}
+			else {
+				startTime = endTime
+				endTime = dateAdd(endTime, 'minute', value.mins);	
+				
+
+			}
+
+			startClock = startTime.getHours()+":"+(startTime.getMinutes()<10?'0':'') + startTime.getMinutes();
+			endClock = endTime.getHours()+":"+(endTime.getMinutes()<10?'0':'') + endTime.getMinutes();
+			
+
 			$('#sort > tbody:last-child').append(
 				'<tr data-id="'+value.order+'" data-order="'+value.order+'"><td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
-				+'<td id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="order">'+ value.order +'</td>'
+				//+'<td id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="order">'+ value.order +'</td>'
 				+'<td class="edit edit-name" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name">'+ value.name +'</td>'
 				+'<td class="edit edit-description" id="edit-description-'+value.order+'" data-key="'+value.order+'" data-what="description">'+ value.description +'</td>'
 				+'<td class="edit edit-mins" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+ value.mins +'</td>'
+				+'<td>'+ startClock +' > '+ endClock +'</td>'
 				+'<td><button type="button" class="btn btn-primary delete-session">delete session</button></td></tr>'
 			);
 		}
@@ -59,10 +81,11 @@ $(document).ready(function() {
 
         $('#sort > tbody:last-child').append(
 			'<tr data-id="'+x+'" data-order="'+x+'"><td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
-			+'<td id="edit-name-'+x+'" data-key="'+x+'" data-what="order">'+ x +'</td>'
+			//+'<td id="edit-name-'+x+'" data-key="'+x+'" data-what="order">'+ x +'</td>'
 			+'<td class="edit edit-name" id="edit-name-'+x+'" data-key="'+x+'" data-what="name">Name of session</td>'
 			+'<td class="edit edit-description" id="edit-description-'+x+'" data-key="'+x+'" data-what="description">Description of session</td>'
 			+'<td class="edit edit-mins" id="edit-mins-'+x+'" data-key="'+x+'" data-what="mins">30</td>'
+			+'<td></td>'
 			+'<td><button type="button" class="btn btn-primary delete-session">delete session</button></td></tr>'
 		);
 
@@ -123,8 +146,6 @@ $(document).ready(function() {
 				} );
 	        });
 
-	        console.log(newPlan);
-
 	        // Now, overwrite the plan in localStorage
 	        localStorage.setItem('plan', JSON.stringify(newPlan));
 	    }
@@ -161,11 +182,26 @@ $(document).ready(function() {
 			localStorage.setItem('plan', JSON.stringify(plan));
 		}
 
-		console.log(key);
-		console.log(value);
 	}
 
-
+	/**
+	DATE STUFF
+	**/
+	function dateAdd(date, interval, units) {
+		var ret = new Date(date); //don't change original date
+		switch(interval.toLowerCase()) {
+			case 'year'   :  ret.setFullYear(ret.getFullYear() + units);  break;
+			case 'quarter':  ret.setMonth(ret.getMonth() + 3*units);  break;
+			case 'month'  :  ret.setMonth(ret.getMonth() + units);  break;
+			case 'week'   :  ret.setDate(ret.getDate() + 7*units);  break;
+			case 'day'    :  ret.setDate(ret.getDate() + units);  break;
+			case 'hour'   :  ret.setTime(ret.getTime() + units*3600000);  break;
+			case 'minute' :  ret.setTime(ret.getTime() + units*60000);  break;
+			case 'second' :  ret.setTime(ret.getTime() + units*1000);  break;
+			default       :  ret = undefined;  break;
+		}
+		return ret;
+	}	
 
 
 	/**
