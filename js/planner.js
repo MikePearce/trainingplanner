@@ -11,8 +11,19 @@ $(document).ready(function() {
 		opts: {
 			indicator : 'Saving...',
         	tooltip   : 'Click to edit...'	,
-        	onblur	  : 'submit'
-		}
+        	onblur	  : 'submit',
+        	type 	  : 'textarea',
+        	data: function(value,settings) {
+	            value = value.replace(/\r/gi, "");
+	            value = value.replace(/\n/gi, "");
+	            var retval = value.replace(/<br>/gi, "\n");
+	            return retval;
+	        },
+	        callback: function(value,settings) {
+	            var retval = value.replace(/\n/gi, "<br>\n");
+	            $(this).html(retval);
+	        },
+ 		}
 	};	
 
 	function getPlan() {
@@ -51,6 +62,7 @@ $(document).ready(function() {
 
 			startClock = startTime.getHours()+":"+(startTime.getMinutes()<10?'0':'') + startTime.getMinutes();
 			endClock = endTime.getHours()+":"+(endTime.getMinutes()<10?'0':'') + endTime.getMinutes();
+			// Create some breaks
 			
 			if (value.type == 'break') {
 				$('#sort > tbody:last-child').append(
@@ -62,6 +74,7 @@ $(document).ready(function() {
 				);
 			}
 			else {
+			
 				$('#sort > tbody:last-child').append(
 					'<tr data-type="'+value.type+'" data-id="'+value.order+'" data-order="'+value.order+'"><td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
 					//+'<td id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="order">'+ value.order +'</td>'
