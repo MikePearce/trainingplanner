@@ -58,3 +58,4 @@ footer {
 .padding-right {
     padding-right: 10px;
 }
+.nobr   { white-space:nowrap; }

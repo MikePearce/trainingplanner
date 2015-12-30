@@ -23,6 +23,8 @@ $(document).ready(function() {
 	            var retval = value.replace(/\n/gi, "<br>\n");
 	            $(this).html(retval);
 	        },
+	        cancel: '<button class="btn btn-danger" type="cancel" >Cancel</button>',
+     		submit: '<button class="btn btn-success" type="submit" >Ok</button>'
  		}
 	};	
 
@@ -41,55 +43,112 @@ $(document).ready(function() {
 		return plan;
 	}
 
-	// Do we ahve anything in local storage?
-	$.each(plan, function(key, value) {
-		if ( value !== null ) {
-			
-			// Timey-wimey stuff
-			if (typeof startTime === 'undefined') {
-				date = new Date();
-				date.setHours($('#start-time').val());
-				date.setMinutes(00);
-				date.setSeconds(00);
+	if ( location.pathname.split("/")[1] == "table.php" ) {
+		$.each(plan, function(key, value) {
+			if ( value !== null ) {
+				
+				// Timey-wimey stuff
+				if (typeof startTime === 'undefined') {
+					date = new Date();
+					date.setHours($('#start-time').val());
+					date.setMinutes(00);
+					date.setSeconds(00);
 
-				startTime = date
-				endTime = dateAdd(date, 'minute', value.mins);	
-			}
-			else {
-				startTime = endTime
-				endTime = dateAdd(endTime, 'minute', value.mins);	
-			}
+					startTime = date
+					endTime = dateAdd(date, 'minute', value.mins);	
+				}
+				else {
+					startTime = endTime
+					endTime = dateAdd(endTime, 'minute', value.mins);	
+				}
 
-			startClock = startTime.getHours()+":"+(startTime.getMinutes()<10?'0':'') + startTime.getMinutes();
-			endClock = endTime.getHours()+":"+(endTime.getMinutes()<10?'0':'') + endTime.getMinutes();
-			// Create some breaks
-			
-			if (value.type == 'break') {
-				$('#sort > tbody:last-child').append(
-					'<tr data-type="break" data-id="'+value.order+'" data-order="'+value.order+'" class="break"><td class="drag break"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
-					+'<td class="edit edit-name break" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name" colspan="2">'+value.name+'</td>'
-					+'<td class="edit edit-mins break" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+value.mins+'</td>'
-					+'<td class="break">'+ startClock +' > '+ endClock +'</td>'
-					+'<td class="break"><button type="button" class="btn btn-primary delete-session">delete session</button></td></tr>'
-				);
+				startClock = startTime.getHours()+":"+(startTime.getMinutes()<10?'0':'') + startTime.getMinutes();
+				endClock = endTime.getHours()+":"+(endTime.getMinutes()<10?'0':'') + endTime.getMinutes();
+				// Create some breaks
+				
+				if (value.type == 'break') {
+					$('#sort-table > tbody:last-child').append(
+						'<tr class="break">'
+						+'<td class="break" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name" colspan="2">'+value.name+'</td>'
+						+'<td class="break" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+value.mins+'</td>'
+						+'<td class="break nobr">'+ startClock +' > '+ endClock +'</td>'
+						+ '</tr>'
+					);
+				}
+				else {
+					value.description = value.description.replace(/\n/g,"<br>");
+					$('#sort-table > tbody:last-child').append(
+						'<tr>'
+						+'<td class="" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name">'+ value.name +'</td>'
+						+'<td class="" id="edit-description-'+value.order+'" data-key="'+value.order+'" data-what="description">'+ value.description +'</td>'
+						+'<td class="" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+ value.mins +'</td>'
+						+'<td class="nobr">'+ startClock +' > '+ endClock +'</td>'
+						+ '</tr>'
+					);	
+				}
+				
+			}			
+		});
+	}
+	else {
+		// Do we ahve anything in local storage?
+		$.each(plan, function(key, value) {
+			if ( value !== null ) {
+				
+				// Timey-wimey stuff
+				if (typeof startTime === 'undefined') {
+					date = new Date();
+					date.setHours($('#start-time').val());
+					date.setMinutes(00);
+					date.setSeconds(00);
+
+					startTime = date
+					endTime = dateAdd(date, 'minute', value.mins);	
+				}
+				else {
+					startTime = endTime
+					endTime = dateAdd(endTime, 'minute', value.mins);	
+				}
+
+				startClock = startTime.getHours()+":"+(startTime.getMinutes()<10?'0':'') + startTime.getMinutes();
+				endClock = endTime.getHours()+":"+(endTime.getMinutes()<10?'0':'') + endTime.getMinutes();
+				// Create some breaks
+				
+				if (value.type == 'break') {
+					$('#sort > tbody:last-child').append(
+						'<tr data-type="break" data-id="'+value.order+'" data-order="'+value.order+'" class="break">'
+						+'<td class="drag break"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
+						+'<td class="edit edit-name break" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name" colspan="2">'+value.name+'</td>'
+						+'<td class="edit edit-mins break" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+value.mins+'</td>'
+						+'<td class="break nobr">'+ startClock +' > '+ endClock +'</td>'
+						+'<td class="break"><button type="button" class="btn btn-primary delete-session">delete session</button></td>'
+						+ '</tr>'
+					);
+				}
+				else {
+					value.description = value.description.replace(/\n/g,"<br>");
+					$('#sort > tbody:last-child').append(
+						'<tr data-type="'+value.type+'" data-id="'+value.order+'" data-order="'+value.order+'">'
+						+ '<td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
+						//+'<td id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="order">'+ value.order +'</td>'
+						+'<td class="edit edit-name" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name">'+ value.name +'</td>'
+						+'<td class="edit edit-description" id="edit-description-'+value.order+'" data-key="'+value.order+'" data-what="description">'+ value.description +'</td>'
+						+'<td class="edit edit-mins" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+ value.mins +'</td>'
+						+'<td class="nobr">'+ startClock +' > '+ endClock +'</td>'
+						+ '<td><button type="button" class="btn btn-primary delete-session">delete session</button></td>'
+						+ '</tr>'
+					);	
+				}
+				
 			}
-			else {
+			$('.edit').editable(editOpts.url, editOpts.opts);
 			
-				$('#sort > tbody:last-child').append(
-					'<tr data-type="'+value.type+'" data-id="'+value.order+'" data-order="'+value.order+'"><td class="drag"><span class="glyphicon glyphicon-resize-vertical"></span></td>'
-					//+'<td id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="order">'+ value.order +'</td>'
-					+'<td class="edit edit-name" id="edit-name-'+value.order+'" data-key="'+value.order+'" data-what="name">'+ value.name +'</td>'
-					+'<td class="edit edit-description" id="edit-description-'+value.order+'" data-key="'+value.order+'" data-what="description">'+ value.description +'</td>'
-					+'<td class="edit edit-mins" id="edit-mins-'+value.order+'" data-key="'+value.order+'" data-what="mins">'+ value.mins +'</td>'
-					+'<td>'+ startClock +' > '+ endClock +'</td>'
-					+'<td><button type="button" class="btn btn-primary delete-session">delete session</button></td></tr>'
-				);	
-			}
-			
-		}
-		$('.edit').editable(editOpts.url, editOpts.opts);
+		});
 		
-	});
+	}
+
+
+	
 
 
 	$('#add-break').click(function(){

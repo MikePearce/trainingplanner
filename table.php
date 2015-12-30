@@ -64,12 +64,8 @@
     <div class="container">
 
         <div class="row">
-        <div class="panel panel-primary filterable">
-            <div class="panel-heading" id="plan-head">
-                <h3 class="panel-title">Training Plan</h3>
-                <div class="pull-right">
-                    <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
-                </div>
+        <div class="">
+            <div class="panel-heading" id="plan-head">  
                 <div class="pull-right padding-right">
                     Start time: 
                     <select name="start-time" id="start-time">
@@ -78,15 +74,13 @@
                     </select>
                 </div>
             </div>
-            <table class="table" id="sort" border="1">
+            <table id="sort-table" class="table table-bordered">
                 <thead>
-                    <tr class="filters">
-                        <th id="tbl-head-order">&nbsp;</th>
-                        <th><input type="text" class="form-control" placeholder="Name" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="Description" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="Length" disabled></th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Length</th>
                         <th class="nobr">Session Starts > Ends</th>
-                        <th id="tbl-head-buttons">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,22 +88,11 @@
                 </tbody>
             </table>
         </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="pull-right">
-                    <button type="button" class="btn btn-primary" id="add-session">add a new session</button>
-                </div>
-                <div class="pull-right padding-right">
-                    <button type="button" class="btn btn-success" id="add-break">add break</button>
-                </div>
-                <br /><br />
-            </div>
-        </div>
 
         <div class="row">
             <div class="col-lg-12">
                 <div class="pull-right">
-                    <a href="table.php" class="btn btn-info" role="button" id="show-as-table">show as table</a>
+                    <a href="/" class="btn btn-info" role="button" id="show-as-table">show as editable</a>
                 </div>
             </div>  
         </div>
